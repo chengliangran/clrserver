@@ -1,0 +1,7 @@
+#header{
+    height: 30px;
+    border: 0.5px solid black;
+}
+#header-left{
+    float: left;
+}

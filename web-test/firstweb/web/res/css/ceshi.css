@@ -1,0 +1,58 @@
+*{
+    margin: 0px;
+    padding: 0px;
+}
+/*这是标题块*/
+#banner-left{
+    float: left;
+    margin-left: 5px;
+    margin-top: 5px;
+}
+#banner-right{
+    float: right;
+}
+
+#header{
+    height: 30px;
+    border: 0.5px solid lightgrey;
+}
+ul{
+
+     list-style: none;
+
+}
+li{
+    display: inline;
+}
+/*这是测试快*/
+#test{
+    position: absolute;
+
+}
+#first{
+    width: 100px;
+    height: 100px;
+    background-color: red;
+}
+#second{
+    width: 100px;
+
+    height: 200px;
+    background-color: blue;
+}
+#third{
+    position: absolute;
+    width: 100%;
+    height: 50px;
+    background-color: grey;
+}
+#forth{
+    height: 100px;
+    background-color: aqua;
+}
+/*第二个测试块*/
+#test1{
+
+    height: 100px;
+    background-color: brown;
+}
