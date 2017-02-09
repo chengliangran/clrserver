@@ -1,5 +1,6 @@
 package com.myserver.core;
 
+import java.io.IOException;
 import java.io.InputStream;
 
 /**
@@ -14,7 +15,18 @@ public class Request {
     }
 
     public void parse() {
-
+        StringBuffer sb=new StringBuffer();
+        byte[] buf=new byte[2048];
+        try {
+            inputStream.read(buf);
+            for (int i=0;i<buf.length;i++){
+                sb.append((char) buf[i]);
+            }
+            String msg=sb.toString();
+                uri=msg.substring(msg.indexOf(" ")+2,msg.indexOf(" ",msg.indexOf(" ")+1));
+          } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public String getUri() {

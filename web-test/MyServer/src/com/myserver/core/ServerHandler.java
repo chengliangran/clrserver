@@ -1,5 +1,6 @@
 package com.myserver.core;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -11,6 +12,7 @@ import java.net.Socket;
  * Created by Administrator on 2017-02-08.
  */
 public class ServerHandler {
+    public static final String WEB_ROOT=System.getProperty("user.dir")+ File.separator+"webroot";
     final String SHUTDOWN="shutdown";
     int port=8080;
     public void await() {
@@ -31,7 +33,7 @@ public class ServerHandler {
                 inputStream=socket.getInputStream();
                 outputStream=socket.getOutputStream();
                 Request request=new Request(inputStream);
-                Response response=new Response(outputStream);
+                Response response=new Response(outputStream,request);
                 request.parse();
                 response.sendResource();
                 if (request.getUri().equals("shutdown")){
