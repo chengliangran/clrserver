@@ -1,27 +1,17 @@
 package com.myserver.core;
 
-import com.sun.net.httpserver.HttpServer;
-
 import java.io.*;
-import java.net.URL;
 
 /**
- * Created by Administrator on 2017-02-09.
+ * Created by Administrator on 2017-02-10.
  */
-public class Response {
-
-    Request request=null;
-    OutputStream outputStream=null;
-    Response(OutputStream outputStream,Request request){
-        this.outputStream=outputStream;
-        this.request=request;
-    }
-
-    public void sendResource()   {
+public class StaticResProcessor {
+    public void process(Request request, Response response) {
+        OutputStream outputStream=response.getOutputStream();
         FileInputStream fileInputStream=null;
         File file=new File(ServerHandler.WEB_ROOT,request.getUri());
         try {
-            System.out.println(ServerHandler.WEB_ROOT+request.getUri());
+            System.out.println(file);
             if (file.exists()){
                 fileInputStream=new FileInputStream(file);
                 byte[] buf=new byte[1024];
@@ -29,7 +19,7 @@ public class Response {
                     outputStream.write(buf,0,buf.length);
 
                 }
-             }else{
+            }else{
                 String errorMessage = "HTTP/1.1 404 File Not Found\r\n" +
                         "Content-Type: text/html\r\n" +
                         "Content-Length: 23\r\n" +
@@ -49,9 +39,5 @@ public class Response {
             }
         }
 
-    }
-
-    public OutputStream getOutputStream(){
-        return outputStream;
     }
 }

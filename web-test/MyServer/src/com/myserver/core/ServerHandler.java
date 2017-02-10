@@ -35,12 +35,18 @@ public class ServerHandler {
                 Request request=new Request(inputStream);
                 Response response=new Response(outputStream,request);
                 request.parse();
-                response.sendResource();
-                if (request.getUri().equals("shutdown")){
+                System.out.println(request.getUri());
+                if(request.getUri().startsWith("servlet/")){
+                    new ServletProcessor().process(request,response);
+
+                }else{
+                    new StaticResProcessor().process(request,response);
+                }
+                 if (request.getUri().equals("shutdown")){
                     shutdown=true;
 
                 }
-
+                socket.close();
 
             } catch (Exception e) {
                 e.printStackTrace();

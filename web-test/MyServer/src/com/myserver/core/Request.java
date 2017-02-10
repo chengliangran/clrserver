@@ -1,5 +1,6 @@
 package com.myserver.core;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -23,7 +24,7 @@ public class Request {
                 sb.append((char) buf[i]);
             }
             String msg=sb.toString();
-                uri=msg.substring(msg.indexOf(" ")+2,msg.indexOf(" ",msg.indexOf(" ")+1));
+            uri=msg.substring(msg.indexOf(" ")+1,msg.indexOf(" ",msg.indexOf(" ")+1));
           } catch (IOException e) {
             e.printStackTrace();
         }
