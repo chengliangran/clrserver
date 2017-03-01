@@ -48,9 +48,7 @@ public class Response {
                 }
             }
         }
-
     }
-
     public OutputStream getOutputStream(){
         return outputStream;
     }

@@ -9,13 +9,14 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 /**
- * Created by Administrator on 2017-02-08.
+ * Created by Administrator on 2017-02-13.
  */
-public class ServerHandler {
+public class Connector {
     public static final String WEB_ROOT=System.getProperty("user.dir")+ File.separator+"webroot";
     final String SHUTDOWN="shutdown";
     int port=8080;
     public void await() {
+
         ServerSocket server=null;
         try {
             server=new ServerSocket(port,1, InetAddress.getByName("localhost"));
@@ -30,24 +31,11 @@ public class ServerHandler {
         while (!shutdown){
             try {
                 socket=server.accept();
-                inputStream=socket.getInputStream();
-                outputStream=socket.getOutputStream();
-                Request request=new Request(inputStream);
-                Response response=new Response(outputStream,request);
-                request.parse();
-                System.out.println(request.getUri());
-                if(request.getUri().startsWith("/servlet/")){
-                    new ServletProcessor().process(request,response);
-                }else{
-                    new StaticResProcessor().process(request,response);
-                }
-                 if (request.getUri().equals("shutdown")){
-                    shutdown=true;
-                }
-                socket.close();
-            } catch (Exception e) {
+                new ServletHandler1().process(socket);
+             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
+
     }
 }

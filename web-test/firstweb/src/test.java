@@ -1,3 +1,5 @@
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 
 /**
@@ -5,9 +7,15 @@ import java.io.InputStream;
  */
 public class test {
     public static void main(String[] args) {
-        getBytes("sad");
+         try {
+            FileInputStream fis=new FileInputStream("d://test/record.txt");
+             System.out.println(System.getProperty("user.dir"));
+             System.out.println(fis.read());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
-     }
+    }
     public static  int getBytes(String input){
         char[] chars= input.toCharArray();
 
