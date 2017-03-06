@@ -1,7 +1,6 @@
 package com.jerrymouse.core.container;
 
 import com.jerrymouse.core.container.component.*;
-import com.jerrymouse.core.container.component.pipeline.PipeLine;
 import com.jerrymouse.tools.Request;
 import com.myserver.core.Response;
 
@@ -30,7 +29,7 @@ public interface Container {
     public Container findChild(String name);
     public Container[] findChilden();
 
-    public void invoke(Request request, Response response);
+    public void invoke(Request request, com.jerrymouse.tools.Response response);
 
 
 

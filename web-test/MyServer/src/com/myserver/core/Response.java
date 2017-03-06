@@ -12,9 +12,12 @@ public class Response {
 
     Request request=null;
     OutputStream outputStream=null;
-    Response(OutputStream outputStream,Request request){
+    public Response(OutputStream outputStream, Request request){
         this.outputStream=outputStream;
         this.request=request;
+    }
+
+    public Response(OutputStream outputStream) {
     }
 
     public void sendResource()   {

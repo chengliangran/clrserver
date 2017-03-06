@@ -1,5 +1,6 @@
 package com.jerrymouse.core;
 
+import com.jerrymouse.core.container.ContainerBase;
 import com.myserver.core.Connector;
 
 /**
@@ -7,9 +8,10 @@ import com.myserver.core.Connector;
  */
 public class BootStrap {
     public static void main(String[] args) {
-        String sm=System.getProperty("user.dir");
-        System.out.println(sm);
+        System.out.println("starting httpconnector");
          HttpConnector connector=new HttpConnector();
+        connector.setContext(new ContainerBase());
+        connector.start();
         connector.connect();
     }
 }

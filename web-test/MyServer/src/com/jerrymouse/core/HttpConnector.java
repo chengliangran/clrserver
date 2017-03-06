@@ -1,5 +1,7 @@
 package com.jerrymouse.core;
 
+import com.jerrymouse.core.container.Container;
+import com.jerrymouse.core.container.SimpleContext;
 import com.newserver.core.*;
 
 import java.io.IOException;
@@ -13,15 +15,25 @@ import java.util.List;
  * Created by Administrator on 2017-02-28.
  */
 public class HttpConnector {
+    int record=0;
+
     boolean stopped=false;
+    //set container
+    Container context=null;
 
+    public Container getContext() {
+        return context;
+    }
 
+    public void setContext(Container context) {
+        this.context = context;
+    }
 
-    //dealing with the processors
+    //dealing with the core
     int maxProcessors=20;
     int minProcessor=5;
     List<HttpProcessor> processors=new ArrayList<>();
-    int curProcessors=processors.size();
+    int curProcessors=minProcessor;
     public void recycle(HttpProcessor processor){
         processors.add(processor);
     }
@@ -35,7 +47,8 @@ public class HttpConnector {
     }
 
     public void start(){
-        while(curProcessors<minProcessor){
+        while(processors.size()<minProcessor){
+            System.out.println("starting creating core");
             HttpProcessor processor=new HttpProcessor(this);
             processors.add(processor);
 
@@ -48,7 +61,9 @@ public class HttpConnector {
             System.out.println("starting receiving socket");
             while (!stopped){
                 Socket socket=serverSocket.accept();
-                System.out.println("get socket");
+//                record++;
+//                System.out.println("第"+record+"轮"+"循环开始");
+                System.out.println("启动");
                 //operating and testing reading sockeet
 //                InputStream is=socket.getInputStream();
 //                int i=is.read();
@@ -62,11 +77,11 @@ public class HttpConnector {
 //                        System.out.println("打印获得结果是"+"------------"+i);
 //                    }
 //                }
-//                System.out.println("循环结束");
 //                System.out.println(sb.toString());
 
                 //creating processor
                 HttpProcessor processor=getProcessor();
+                System.out.println("拿到processor");
                 if (processor==null){
                     continue;
                 }else {
@@ -78,4 +93,6 @@ public class HttpConnector {
             e.printStackTrace();
         }
     }
+
+
 }
