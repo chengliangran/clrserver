@@ -12,7 +12,7 @@ import java.util.ArrayList;
  */
 public class Connector {
 
-    // operating container
+    // 配置容器
     Container container=new SimpleContext();
 
     public Container getContainer() {
@@ -24,22 +24,22 @@ public class Connector {
     }
 
 
-//    a core pool to allow connector using it creating core
+//  处理类池，负责提供处理类
     ArrayList<HTTPProcessor> processors=new ArrayList<>();
     int minProcessros=5;
     int maxProcessors=20;
     int curProcessors=minProcessros;
-//    initializing core pool
+//  ---负责初始化处理类池
     public void start(){
         while (processors.size()<minProcessros){
             processors.add(new HTTPProcessor());
         }
     }
-//    put the processor back into the pool
+//   ---将处理类放回池中
     public void recycle(HTTPProcessor processor){
         processors.add(processor);
     }
-//    get processor
+//   ---取出处理类
     public HTTPProcessor getProcessor(){
         if(processors.size()>0){
             HTTPProcessor processor=processors.remove(processors.size()-1);
@@ -61,7 +61,7 @@ public class Connector {
 
 
 
-//    main entrance of the server,used to start the ServerSocket and get socket to pass to the processor
+//  负责接收socket
     public void connect() {
         try {
             ServerSocket serverSocket = new ServerSocket(8080);

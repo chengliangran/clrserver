@@ -7,6 +7,8 @@ import java.net.Socket;
  * Created by Administrator on 2017-03-06.
  */
 public class HTTPProcessor implements Runnable{
+
+//    初始化处理类并且赋予编号
     private static int lastProcessorVer=0;
     private int curProcessorVer;
     public HTTPProcessor() {
@@ -16,16 +18,20 @@ public class HTTPProcessor implements Runnable{
     public int getProcessorVersion(){
       return curProcessorVer;
     }
-    //    operating connector
+
+//    管理连接器
     private Connector connector;
 
     public void setConnector(Connector connector) {
+
         this.connector=connector;
     }
     private Connector getConnector(){
+
         return connector;
     }
-//    operating socket
+
+//  管理socket
     boolean available=false;
     private Socket socket;
 
@@ -51,7 +57,7 @@ public class HTTPProcessor implements Runnable{
         }
     }
 
-    //    starting multithread method
+//    开启多线程
     public void start() {
         Thread t=new Thread(this);
         t.start();
@@ -90,7 +96,7 @@ public class HTTPProcessor implements Runnable{
                 c=is.read();
             }
             System.out.println(sb.toString());
-
+            
             //write
             File file=new File(Constants.WEB_ROOT,"a.txt");
             InputStream inputStream=new FileInputStream(file);
