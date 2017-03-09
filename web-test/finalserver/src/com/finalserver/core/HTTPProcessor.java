@@ -1,7 +1,12 @@
 package com.finalserver.core;
 
+import com.finalserver.core.container.Container;
+import com.finalserver.core.request.Request;
+import com.finalserver.core.response.Response;
+
 import java.io.*;
 import java.net.Socket;
+import java.util.ArrayList;
 
 /**
  * Created by Administrator on 2017-03-06.
@@ -69,47 +74,37 @@ public class HTTPProcessor implements Runnable{
     }
 
     private void test() {
-        System.out.println(this.getProcessorVersion()+"starting processing socket");
-        System.out.println(Constants.WEB_ROOT);
-        socket=getSocket();
-        OutputStream outputStream=null;
         try {
-            outputStream=socket.getOutputStream();
-        } catch (IOException e) {
-            e.printStackTrace();
-            System.out.println(getProcessorVersion()+"sleeping");
-        }
-        try {
-            System.out.println("start writing");
-//            String msg="HTTP/1.1 404 File Not Found\r\n" +
-//                    "Content-Type: text/html\r\n" +
-//                    "Content-Length: 23\r\n" +
-//                    "\r\n" +
-//                    "<h1>ceshijieguo</h1>";
-//            outputStream.write(msg.getBytes());
-            //read
-            InputStream is=socket.getInputStream();
-            int c=is.read();
+            socket=getSocket();
+            InputStream inputStream=socket.getInputStream();
+            OutputStream outputStream=socket.getOutputStream();
+            byte[] bytes=new byte[1024];
+            int i=inputStream.read(bytes);
             StringBuffer sb=new StringBuffer();
-            for (int s=0;s<300;s++){
-                sb.append((char)c);
-                c=is.read();
+            while (i!=-1){
+                sb.append(new String(bytes,0,bytes.length));
+                i=inputStream.read(bytes);
+
             }
-            System.out.println(sb.toString());
-            
-            //write
-            File file=new File(Constants.WEB_ROOT,"a.txt");
-            InputStream inputStream=new FileInputStream(file);
-            byte[] buf=new byte[1024];
-            int length= inputStream.read(buf);
-            while (length!=-1){
-                outputStream.write(buf,0,buf.length);
-                length= inputStream.read(buf);
+            String reqString=sb.toString();
+            System.out.println(reqString);
+            String[] strings=reqString.split("\r\n");
+            for (String string : strings) {
+                System.out.println(string+"哈哈哈");
             }
-        } catch (Exception e) {
+
+            String requestLine=strings[0];
+            ArrayList headersStr=new ArrayList();
+            for (int s=1;s<strings.length-1;s++){
+                headersStr.add(strings[s]);
+            };
+            Request request=new Request(inputStream);
+            Response response=new Response(outputStream,request);
+            Container container=connector.getContainer();
+            container.invoke();
+
+         } catch (IOException e) {
             e.printStackTrace();
         }
-
-
     }
 }
