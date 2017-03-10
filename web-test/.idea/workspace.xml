@@ -46,7 +46,7 @@
         <entry file="file://$PROJECT_DIR$/finalserver/src/com/finalserver/core/BootStrap.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="141">
-              <caret line="17" column="1" selection-start-line="17" selection-start-column="1" selection-end-line="17" selection-end-column="1" />
+              <caret line="17" column="0" selection-start-line="17" selection-start-column="0" selection-end-line="18" selection-end-column="0" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -939,12 +939,12 @@
       <workItem from="1488936278735" duration="19000" />
       <workItem from="1488936355649" duration="10066000" />
       <workItem from="1489021737435" duration="14978000" />
-      <workItem from="1489108038448" duration="16203000" />
+      <workItem from="1489108038448" duration="16328000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="189931000" />
+    <option name="totallyTimeSpent" value="190056000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -956,7 +956,7 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1382" height="744" extended-state="0" />
+    <frame x="-8" y="-8" width="1382" height="744" extended-state="1" />
     <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -1400,7 +1400,7 @@
     <entry file="file://$PROJECT_DIR$/finalserver/src/com/finalserver/core/BootStrap.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="141">
-          <caret line="17" column="1" selection-start-line="17" selection-start-column="1" selection-end-line="17" selection-end-column="1" />
+          <caret line="17" column="0" selection-start-line="17" selection-start-column="0" selection-end-line="18" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
