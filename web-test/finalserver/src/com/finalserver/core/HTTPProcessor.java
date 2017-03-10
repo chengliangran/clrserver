@@ -89,20 +89,27 @@ public class HTTPProcessor implements Runnable{
             String reqString=sb.toString();
             System.out.println(reqString);
             String[] strings=reqString.split("\r\n");
-            for (String string : strings) {
-                System.out.println(string+"哈哈哈");
-            }
-
             String requestLine=strings[0];
             ArrayList headersStr=new ArrayList();
             for (int s=1;s<strings.length-1;s++){
                 headersStr.add(strings[s]);
             };
+            int space=reqString.indexOf(' ');
+            int space2=reqString.indexOf(' ',space+1);
+            System.out.println(requestLine);
+            System.out.println("第一个空壳"+space);
+            System.out.println("第二个空壳"+space2);
+            String method=requestLine.substring(0,space);
+            String uri=requestLine.substring(space+1,space2);
+            String protocal=requestLine.substring(space2);
+            System.out.println(method+"---"+uri+"---"+protocal);
+            System.out.println(requestLine.substring(0,requestLine.indexOf(' ')));
+
             Request request=new Request(inputStream);
             Response response=new Response(outputStream,request);
             Container container=connector.getContainer();
-            container.invoke();
-
+            container.invoke(request,response);
+            socket.close();
          } catch (IOException e) {
             e.printStackTrace();
         }

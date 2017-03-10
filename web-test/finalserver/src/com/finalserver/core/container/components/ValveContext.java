@@ -4,8 +4,9 @@ import com.finalserver.core.request.Request;
 import com.finalserver.core.response.Response;
 
 /**
- * Created by Administrator on 2017-03-09.
+ * Created by Administrator on 2017-03-10.
  */
-public interface Valve {
-    public void invoke(Request request, Response response, ValveContext valveContext);
+public interface ValveContext {
+
+    void involveNext(Request request, Response response);
 }

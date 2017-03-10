@@ -1,9 +1,6 @@
 package com.finalserver.core.container;
 
-import com.finalserver.core.container.components.Loader;
-import com.finalserver.core.container.components.Logger;
-import com.finalserver.core.container.components.Mapper;
-import com.finalserver.core.container.components.PipeLine;
+import com.finalserver.core.container.components.*;
 import com.finalserver.core.request.Request;
 import com.finalserver.core.response.Response;
 
@@ -11,6 +8,8 @@ import com.finalserver.core.response.Response;
  * Created by Administrator on 2017-03-06.
  */
 public class SimpleContext implements Container{
+    private PipeLine pipeLine=null;
+
 
 
     @Override
@@ -50,7 +49,7 @@ public class SimpleContext implements Container{
 
     @Override
     public void setPipeLine(PipeLine pipeLine) {
-
+        this.pipeLine=pipeLine;
     }
     //主方法唤醒容器
     @Override
