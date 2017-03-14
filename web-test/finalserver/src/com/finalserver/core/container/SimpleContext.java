@@ -4,11 +4,16 @@ import com.finalserver.core.container.components.*;
 import com.finalserver.core.request.Request;
 import com.finalserver.core.response.Response;
 
+import java.security.PrivilegedExceptionAction;
+
 /**
  * Created by Administrator on 2017-03-06.
  */
 public class SimpleContext implements Container{
     private PipeLine pipeLine=null;
+    private Loader loader=null;
+    private Manager manager=null;
+    private Realm realm=null;
 
 
 
@@ -54,6 +59,6 @@ public class SimpleContext implements Container{
     //主方法唤醒容器
     @Override
     public void invoke(Request request, Response response) {
-        System.out.println("helloword");
+        System.out.println("开始使用容器");
     }
 }

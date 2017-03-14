@@ -4,10 +4,15 @@ import com.finalserver.core.container.Container;
 import com.finalserver.core.request.Request;
 import com.finalserver.core.response.Response;
 
+import java.io.File;
+
 /**
  * Created by Administrator on 2017-03-08.
  */
 public class SimplePipeLine implements PipeLine,LifecycleListener{
+    public static void main(String[] args) {
+        System.out.println(new File("/").getAbsolutePath());
+    }
     Valve basic=null;
     Valve[] valves=new Valve[0];
     Container container=null;

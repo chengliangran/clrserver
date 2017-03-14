@@ -108,6 +108,7 @@ public class HTTPProcessor implements Runnable{
             Request request=new Request(inputStream);
             Response response=new Response(outputStream,request);
             Container container=connector.getContainer();
+            System.out.println("开始唤醒容器");
             container.invoke(request,response);
             socket.close();
          } catch (IOException e) {
