@@ -13,7 +13,7 @@ import java.util.ArrayList;
 public class Connector {
 
     // 配置容器
-    Container container=new SimpleContext();
+    Container container = new SimpleContext();
 
     public Container getContainer() {
         return container;
@@ -24,55 +24,57 @@ public class Connector {
     }
 
 
-//  处理类池，负责提供处理类
-    ArrayList<HTTPProcessor> processors=new ArrayList<>();
-    int minProcessros=5;
-    int maxProcessors=20;
-    int curProcessors=minProcessros;
-//  ---负责初始化处理类池
-    public void start(){
-        while (processors.size()<minProcessros){
+    //  处理类池，负责提供处理类
+    ArrayList<HTTPProcessor> processors = new ArrayList<>();
+    int minProcessros = 5;
+    int maxProcessors = 20;
+    int curProcessors = minProcessros;
+
+    //  ---负责初始化处理类池
+    public void start() {
+        while (processors.size() < minProcessros) {
             processors.add(new HTTPProcessor());
         }
     }
-//   ---将处理类放回池中
-    public void recycle(HTTPProcessor processor){
+
+    //   ---将处理类放回池中
+    public void recycle(HTTPProcessor processor) {
         processors.add(processor);
     }
-//   ---取出处理类
-    public HTTPProcessor getProcessor(){
-        if(processors.size()>0){
-            HTTPProcessor processor=processors.remove(processors.size()-1);
+
+    //   ---取出处理类
+    public HTTPProcessor getProcessor() {
+        if (processors.size() > 0) {
+            HTTPProcessor processor = processors.remove(processors.size() - 1);
             processor.setConnector(this);
             return processor;
-        }else{
-            if (curProcessors<maxProcessors){
+        } else {
+            if (curProcessors < maxProcessors) {
                 curProcessors++;
                 processors.add(new HTTPProcessor());
-                HTTPProcessor processor=processors.remove(processors.size()-1);
+                HTTPProcessor processor = processors.remove(processors.size() - 1);
                 processor.setConnector(this);
                 return processor;
 
-            }else {
+            } else {
                 return null;
             }
         }
     }
 
-
-
-//  负责接收socket
+    //  负责接收socket
     public void connect() {
+
         try {
             ServerSocket serverSocket = new ServerSocket(8080);
             while (true) {
                 Socket socket = serverSocket.accept();
                 HTTPProcessor processor = getProcessor();
-                if (processor!=null){
-                processor.start();
+                if (processor != null) {
+                    processor.start();
                     Thread.currentThread().sleep(10);
-                processor.setSocket(socket);
-                }else {
+                    processor.setSocket(socket);
+                } else {
                     socket.close();
                 }
             }
