@@ -70,6 +70,11 @@ public class SimplePipeLine implements PipeLine,LifecycleListener{
         new SimpleContextValveContext().involveNext(request,response);
     }
 
+    @Override
+    public void setBasic(BasicValve basic) {
+        this.basic=basic;
+    }
+
 
     //内部类
     class SimpleContextValveContext implements ValveContext{

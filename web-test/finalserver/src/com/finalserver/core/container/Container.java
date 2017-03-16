@@ -10,7 +10,7 @@ import com.finalserver.core.response.Response;
 /**
  * Created by Administrator on 2017-03-06.
  */
-public interface Container{ 
+public interface Container {
 
     public Logger getLogger();
 
@@ -30,9 +30,16 @@ public interface Container{
 
 
     public PipeLine getPipeLine();
-    
+
 
     public void setPipeLine(PipeLine pipeLine);
+
+    public void setChild(Container container);
+
+    public Container getChild(String container);
+
+    public Container[] getChildren();
+
 
     //主方法唤醒容器
     void invoke(Request request, Response response);

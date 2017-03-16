@@ -1,6 +1,7 @@
 package com.finalserver.core;
 
 import com.finalserver.core.container.*;
+import com.finalserver.core.container.components.BasicContextValve;
 import com.finalserver.core.container.components.PipeLine;
 import com.finalserver.core.container.components.SimplePipeLine;
 import com.finalserver.core.container.components.TestValve;
@@ -14,8 +15,9 @@ public class BootStrap {
         Connector connector=new Connector();
         Container container=new SimpleContext();
         PipeLine pipeLine=new SimplePipeLine();
+        pipeLine.setBasic(new BasicContextValve());
         pipeLine.addValve(new TestValve());
-         container.setPipeLine(pipeLine);
+        container.setPipeLine(pipeLine);
         connector.setContainer(container);
 
         connector.start();
