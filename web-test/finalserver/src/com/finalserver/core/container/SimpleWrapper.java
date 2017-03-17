@@ -52,7 +52,23 @@ public class SimpleWrapper implements Container {
     }
 
     @Override
+    public void setChild(Container container) {
+
+    }
+
+    @Override
+    public Container getChild(String container) {
+        return null;
+    }
+
+    @Override
+    public Container[] getChildren() {
+        return new Container[0];
+    }
+
+    @Override
     public void invoke(Request request, Response response) {
+        System.out.println("开始执行程序");
 
     }
 }

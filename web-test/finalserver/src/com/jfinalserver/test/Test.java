@@ -66,8 +66,9 @@ public class Test {
 //        java.lang.ClassLoader classLoader= ArrayList.class.getClassLoader();
 //         classLoader= Bootstrap.class.getClassLoader();
 //         System.out.println(new File("/").getAbsolutePath());
-        String s="qeqweqweqweasdsa1sdfdsdfds";
-        System.out.println(s.substring(s.indexOf("1")+1));
-
+         java.lang.ClassLoader classLoader=Test.class.getClassLoader();
+        System.out.println(classLoader);
+        System.out.println(classLoader.getParent());
+        System.out.println(classLoader.getParent().getParent());
     }
 }

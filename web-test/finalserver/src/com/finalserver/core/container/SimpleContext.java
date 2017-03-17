@@ -4,8 +4,6 @@ import com.finalserver.core.container.components.*;
 import com.finalserver.core.request.Request;
 import com.finalserver.core.response.Response;
 
-import java.security.PrivilegedExceptionAction;
-
 /**
  * Created by Administrator on 2017-03-06.
  */
@@ -17,14 +15,15 @@ public class SimpleContext implements Container {
 
 
     @Override
-    public Logger getLogger() {
+    public com.finalserver.core.container.components.Logger getLogger() {
         return null;
     }
 
     @Override
-    public void setLogger(Logger logger) {
+    public void setLogger(com.finalserver.core.container.components.Logger logger) {
 
     }
+
 
     @Override
     public Loader getLoader() {
