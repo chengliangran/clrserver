@@ -66,9 +66,16 @@ public class Test {
 //        java.lang.ClassLoader classLoader= ArrayList.class.getClassLoader();
 //         classLoader= Bootstrap.class.getClassLoader();
 //         System.out.println(new File("/").getAbsolutePath());
-         java.lang.ClassLoader classLoader=Test.class.getClassLoader();
-        System.out.println(classLoader);
-        System.out.println(classLoader.getParent());
-        System.out.println(classLoader.getParent().getParent());
+        File file=new File(Constants.Test);
+        try {
+            Writer writer=new FileWriter(file,true);
+            writer.write("char测试");
+            writer.write("asdasdasdas");
+//            OutputStream outputStream=new FileOutputStream(file,true);
+//            outputStream.write("byte测试asdsdasdsa".getBytes());
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

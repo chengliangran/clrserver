@@ -9,4 +9,5 @@ import java.io.File;
  */
 public class Constants {
     public static String WEB_ROOT= System.getProperty("user.dir")+ File.separator+"finalserver"+File.separator+"webcontent"+File.separator;
+    public static String Test=WEB_ROOT+File.separator+"ceshi.txt";
 }

@@ -65,6 +65,13 @@ public class SimpleWrapper implements Container {
     public Container[] getChildren() {
         return new Container[0];
     }
+    private Servlet loadServlet(){
+        return null;
+    }
+//    由valve调用，实现servlet获取
+    public Servlet allocate(){
+        return null;
+    }
 
     @Override
     public void invoke(Request request, Response response) {
