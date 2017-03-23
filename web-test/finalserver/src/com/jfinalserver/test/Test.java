@@ -4,6 +4,7 @@ import com.finalserver.core.Constants;
 import com.sun.corba.se.spi.activation.Repository;
 import com.sun.org.apache.bcel.internal.util.ClassLoader;
 import jdk.nashorn.internal.runtime.linker.Bootstrap;
+import org.xml.sax.InputSource;
 
 import java.io.*;
 import java.net.*;
@@ -22,6 +23,16 @@ import java.util.logging.SimpleFormatter;
 public class Test {
     public static void main(String[] args) {
         File file=new File(Constants.WEB_ROOT);
-        Rule
+        try {
+            FileOutputStream fis=new FileOutputStream(file+file.separator+"ceshi.txt",true);
+            fis.write("asdkasdjkasd".getBytes());
+            System.out.println(ClassLoader.getSystemClassLoader());
+
+         } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        InputSource is=new InputSource();
+        ClassLoaderFactor
     }
 }
