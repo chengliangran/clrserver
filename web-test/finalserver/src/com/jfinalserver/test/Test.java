@@ -27,12 +27,11 @@ public class Test {
             FileOutputStream fis=new FileOutputStream(file+file.separator+"ceshi.txt",true);
             fis.write("asdkasdjkasd".getBytes());
             System.out.println(ClassLoader.getSystemClassLoader());
-
+            System.out.println(Constants.WEB_ROOT);
          } catch (IOException e) {
             e.printStackTrace();
         }
 
         InputSource is=new InputSource();
-        ClassLoaderFactor
-    }
+     }
 }
