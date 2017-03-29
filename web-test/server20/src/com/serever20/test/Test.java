@@ -1,12 +1,16 @@
 package com.serever20.test;
 
+import com.sun.org.apache.bcel.internal.util.ClassLoader;
+
 import java.io.*;
 
 import java.net.ConnectException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.nio.channels.NotYetBoundException;
 import java.util.ArrayList;
 import java.util.Hashtable;
+import java.util.Properties;
 import java.util.Random;
 
 /**
@@ -14,9 +18,18 @@ import java.util.Random;
  */
 public class Test {
     public static void main(String[] args) {
-        Random random=new Random();
-        for (int i=0;i<100;i++){
-            System.out.println(random.nextInt()*1000);
+        try {
+            Properties properties=new Properties();
+             Class clazz=Class.forName("java.util.Random");
+            Random o= (Random) clazz.newInstance();
+            System.out.println(o);
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
         }
+
     }
 }

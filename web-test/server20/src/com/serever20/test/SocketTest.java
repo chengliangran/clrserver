@@ -14,11 +14,13 @@ public class SocketTest {
             ServerSocket ss = new ServerSocket(8080);
             while (true) {
                 socket = ss.accept();
+                System.out.println("开始生产socket");
                 int i=0;
                 StringBuilder sb=new StringBuilder();
                 BufferedReader reader=new BufferedReader(new InputStreamReader(socket.getInputStream()));
                 while (i!=-1){
                     i=reader.read();
+                    System.out.print((char)i);
                     sb.append((char)i);
                 }
                 System.out.println(sb.toString());
