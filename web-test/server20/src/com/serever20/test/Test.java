@@ -30,6 +30,8 @@ public class Test {
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         }
+        ClassLoader classLoader=new ClassLoader();
+        ClassLoader classLoader1=new ClassLoader();
 
     }
 }
