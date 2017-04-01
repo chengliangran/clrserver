@@ -18,20 +18,8 @@ import java.util.Random;
  */
 public class Test {
     public static void main(String[] args) {
-        try {
-            Properties properties=new Properties();
-             Class clazz=Class.forName("java.util.Random");
-            Random o= (Random) clazz.newInstance();
-            System.out.println(o);
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        }
-        ClassLoader classLoader=new ClassLoader();
-        ClassLoader classLoader1=new ClassLoader();
+         String json="[{\"CityId\":18,\"CityName\":\"西安\",\"ProvinceId\":27,\"CityOrder\":1},{\"CityId\":53,\"CityName\":\"广州\",\"ProvinceId\":27,\"CityOrder\":1}]";
+
 
     }
 }
