@@ -8,6 +8,7 @@ import java.net.ConnectException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.nio.channels.NotYetBoundException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Properties;
@@ -20,6 +21,7 @@ public class Test {
     public static void main(String[] args) {
          String json="[{\"CityId\":18,\"CityName\":\"西安\",\"ProvinceId\":27,\"CityOrder\":1},{\"CityId\":53,\"CityName\":\"广州\",\"ProvinceId\":27,\"CityOrder\":1}]";
 
-
+        Timestamp timestamp=new Timestamp(System.currentTimeMillis());
+        System.out.println(timestamp.toString().substring(0,10));
     }
 }

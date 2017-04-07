@@ -15,24 +15,43 @@ import java.util.ArrayList;
 public class HttpConnector {
 
     private boolean started=true;
+
     private ArrayList<HttpProccessor> httpProccessors=new ArrayList<HttpProccessor>();
+    int nInstances=0;
     int maxProcessors=30;
     int minProcessors=10;
 
-    public void start(){
 
+
+    public void start(){
+        for (int i=0;i<minProcessors;i++){
+            httpProccessors.add(new HttpProccessor());
+            nInstances++;
+        }
+    }
+    public HttpProccessor getProcessor(){
+        if (httpProccessors.size()>0){
+            System.out.println("current processors="+nInstances+"processors");
+            return httpProccessors.remove(httpProccessors.size()-1);
+        }else if (nInstances<maxProcessors){
+            nInstances++;
+            System.out.println("current processors="+nInstances+"processors");
+            return new HttpProccessor();
+        }else {
+            System.out.println("current processors="+nInstances+"processors");
+            return null;
+        }
     }
     public static void main(String[] args) {
-        System.out.println("开始");
+        new HttpConnector().connect();
     }
     public void connect(){
         try {
             ServerSocket serverSocket=new ServerSocket(8080);
             Socket socket=null;
             while (started){
-                serverSocket.accept();
-                InputStream inputStream=socket.getInputStream();
-                OutputStream outputStream= socket.getOutputStream();
+                socket= serverSocket.accept();
+
 
             }
         } catch (IOException e) {
