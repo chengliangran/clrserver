@@ -1,4 +1,4 @@
-package com.serever20.test;
+package com.server20.test;
 
 import java.io.*;
 import java.net.ServerSocket;
@@ -26,7 +26,7 @@ public class SocketTest {
                 System.out.println(sb.toString());
                 System.out.println("finish one socket");
                 byte[] paper=new byte[2048];
-                InputStream inputStream=new FileInputStream(new File(Constants.ceshi));
+                InputStream inputStream=new FileInputStream(new File(Constants.root));
                 OutputStream outputStream=socket.getOutputStream();
                 int index= inputStream.read(paper);
                 while (index!=-1){

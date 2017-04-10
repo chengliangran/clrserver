@@ -1,4 +1,4 @@
-package com.serever20.test;
+package com.server20.test;
 
 import java.io.IOException;
 import java.io.InputStream;

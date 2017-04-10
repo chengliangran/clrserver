@@ -1,16 +1,13 @@
-package com.serever20.test;
+package com.server20.test;
 
-import com.server20.core.HttpProccessor;
-import com.server20.core.Request;
-import com.server20.core.Response;
-import com.sun.deploy.trace.SocketTraceListener;
+import com.sun.xml.internal.bind.v2.runtime.reflect.opt.Const;
+import com.sun.xml.internal.bind.v2.runtime.unmarshaller.*;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Created by Administrator on 2017-04-07.
@@ -19,23 +16,29 @@ import java.util.ArrayList;
 public class UltraTest {
     public static void main(String[] args) {
         Connector connector=new Connector();
-        connector.setContainer(new Context());
+        connector.setContainer(new SimpleContext());
         connector.connect();
 
     }
 }
+class Constants{
+    public static final String root=System.getProperty("user.dir");
+    public static final String WEB_ROOT=root+"/server20/WebContent";
+ }
+
+
 //***连接器
 class Connector{
-//    container
-    Context container=null;
+    Container container=null;
 
-    public Context getContainer() {
+    public Container getContainer() {
         return container;
     }
 
-    public void setContainer(Context container) {
+    public void setContainer(Container container) {
         this.container = container;
     }
+
 
     //    processors
     ArrayList<Processor> processors=new ArrayList<>();
@@ -139,7 +142,7 @@ class Processor implements Runnable{
             HttpRequest request=new HttpRequest(inputStream);
             HttpResponse response=new HttpResponse(outputStream,request);
             request.parse();
-            connector.getContainer().invoke();
+            connector.getContainer().invoke(request,response);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -195,8 +198,77 @@ class HttpResponse{
     }
 }
 //***容器
-class Context{
-    public void invoke(){
+class SimpleContext implements Container{
+    private Container parent=null;
+    private HashMap children=new HashMap();
+    private Loader loader=null;
+    private Logger logger=null;
+    private PipeLine pipeLine=null;
+    private HashMap servletMapping=null;
+    private Mapper mapper=null;
+    private boolean started=false;
+
+    @Override
+    public void invoke(HttpRequest request, HttpResponse response) {
         System.out.println("starting proccessing socket");
+        System.out.println("容器的根目录"+Constants.root);
+        byte[] buf= new byte[0];
+        try {
+            InputStream inputStream= new FileInputStream(new File(Constants.WEB_ROOT,"ceshi.txt"));
+            buf = new byte[2048];
+            inputStream.read(buf);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        System.out.println(new String(buf));
+        pipeLine.invoke(request,response);
+    }
+
+    @Override
+    public void addChild(Container container) {
+
+    }
+
+    @Override
+    public Container removeChild(Container container) {
+        return null;
+    }
+
+    @Override
+    public void findChild(String name) {
+
+    }
+
+    @Override
+    public Container[] findChildren() {
+        return null;
+    }
+}
+
+class SimpleMapper implements Mapper{
+
+    @Override
+    public Container getContainer() {
+        return null;
+    }
+
+    @Override
+    public void setContainer(Container container) {
+
+    }
+
+    @Override
+    public void mapper(HttpRequest request) {
+
+    }
+
+    @Override
+    public void setProtocal(String protocal) {
+
+    }
+
+    @Override
+    public String getProtocal() {
+        return null;
     }
 }

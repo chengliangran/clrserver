@@ -1,4 +1,4 @@
-package com.serever20.test;
+package com.server20.test;
 
 import sun.misc.Launcher;
 
@@ -16,7 +16,7 @@ class WebappClassLoader{
 
          ClassLoader classLoader=Launcher.getLauncher().getClassLoader();
         try {
-            Class clazz=classLoader.loadClass("com.serever20.test.LoaderTest");
+            Class clazz=classLoader.loadClass("LoaderTest");
             Object object=clazz.newInstance();
             System.out.println((LoaderTest)object);
         } catch (ClassNotFoundException e) {
