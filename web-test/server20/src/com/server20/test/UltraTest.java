@@ -1,5 +1,6 @@
 package com.server20.test;
 
+import com.server20.core.*;
 import com.sun.xml.internal.bind.v2.runtime.reflect.opt.Const;
 import com.sun.xml.internal.bind.v2.runtime.unmarshaller.*;
 
@@ -16,7 +17,12 @@ import java.util.HashMap;
 public class UltraTest {
     public static void main(String[] args) {
         Connector connector=new Connector();
-        connector.setContainer(new SimpleContext());
+        SimpleContext context=new SimpleContext();
+        context.addValve(new TestValve());
+        StandardBasicValve standardBasicValve=new StandardBasicValve();
+        standardBasicValve.setContainer(context);
+        context.setBasicValve(standardBasicValve);
+        connector.setContainer(context);
         connector.connect();
 
     }
@@ -161,6 +167,15 @@ class HttpRequest{
     String requestString=null;
     InputStream inputStream=null;
     String uri=null;
+
+    public String getUri() {
+        return uri;
+    }
+
+    public void setUri(String uri) {
+        this.uri = uri;
+    }
+
     public HttpRequest(InputStream inputStream) {
         this.inputStream = inputStream;
     }
@@ -184,13 +199,38 @@ class HttpRequest{
         int spac1Index=reqLine.indexOf(" ");
         int spac2Index=reqLine.indexOf(" ",spac1Index+1);
         uri=reqLine.substring(spac1Index+1,spac2Index);
-        System.out.println(uri);
 
     }
 }
 class HttpResponse{
+    Context context=null;
+
+    public Context getContext() {
+        return context;
+    }
+
+    public void setContext(Context context) {
+        this.context = context;
+    }
+
     OutputStream outputStream=null;
     HttpRequest request=null;
+
+    public OutputStream getOutputStream() {
+        return outputStream;
+    }
+
+    public void setOutputStream(OutputStream outputStream) {
+        this.outputStream = outputStream;
+    }
+
+    public HttpRequest getRequest() {
+        return request;
+    }
+
+    public void setRequest(HttpRequest request) {
+        this.request = request;
+    }
 
     public HttpResponse(OutputStream outputStream, HttpRequest request) {
         this.outputStream = outputStream;
@@ -198,20 +238,43 @@ class HttpResponse{
     }
 }
 //***容器
-class SimpleContext implements Container{
+class ContainerBase implements Container, Context, PipeLine{
     private Container parent=null;
     private HashMap children=new HashMap();
     private Loader loader=null;
     private Logger logger=null;
-    private PipeLine pipeLine=null;
+    private PipeLine pipeLine=new StandardPipeline(this);
     private HashMap servletMapping=null;
     private Mapper mapper=null;
     private boolean started=false;
 
     @Override
+    public BasicValve getBasicValve() {
+        return pipeLine.getBasicValve();
+    }
+
+    @Override
+    public void setBasicValve(BasicValve basicValve) {
+        pipeLine.setBasicValve(basicValve);
+    }
+
+    @Override
+    public void addValve(Valve valve) {
+        pipeLine.addValve(valve);
+    }
+
+    @Override
+    public Valve removeValve(Valve valve) {
+        return null;
+    }
+
+    @Override
+    public Valve[] getValves() {
+        return new Valve[0];
+    }
+
+    @Override
     public void invoke(HttpRequest request, HttpResponse response) {
-        System.out.println("starting proccessing socket");
-        System.out.println("容器的根目录"+Constants.root);
         byte[] buf= new byte[0];
         try {
             InputStream inputStream= new FileInputStream(new File(Constants.WEB_ROOT,"ceshi.txt"));
@@ -220,8 +283,7 @@ class SimpleContext implements Container{
         } catch (IOException e) {
             e.printStackTrace();
         }
-        System.out.println(new String(buf));
-        pipeLine.invoke(request,response);
+         pipeLine.invoke(request,response);
     }
 
     @Override
@@ -243,6 +305,24 @@ class SimpleContext implements Container{
     public Container[] findChildren() {
         return null;
     }
+
+    @Override
+    public Container map(HttpRequest request) {
+        return null;
+    }
+}
+
+class SimpleContext extends ContainerBase{
+    @Override
+    public Container map(HttpRequest request){
+        return null;
+    }
+}
+class Wrapper extends ContainerBase{
+
+}
+class SimpleWrapper extends Wrapper{
+
 }
 
 class SimpleMapper implements Mapper{
@@ -270,5 +350,129 @@ class SimpleMapper implements Mapper{
     @Override
     public String getProtocal() {
         return null;
+    }
+}
+
+class StandardPipeline implements PipeLine {
+    Container parent=null;
+
+    protected Valve[] valves=new Valve[0];
+    protected BasicValve basicValve=null;
+
+    public BasicValve getBasicValve() {
+        return basicValve;
+    }
+
+    public void setBasicValve(BasicValve basicValve) {
+        this.basicValve = basicValve;
+    }
+
+    public StandardPipeline(Container container){
+        if (container!=null&&container instanceof Context){
+            parent=container;
+        }
+    }
+
+    @Override
+    public void addValve(Valve valve) {
+        Valve[] newValves=new Valve[valves.length+1];
+        for (int i=0;i<valves.length;i++){
+            newValves[i]=valves[i];
+        }
+        newValves[newValves.length-1]=valve;
+        valves=newValves;
+    }
+
+    @Override
+    public Valve removeValve(Valve valve) {
+        return null;
+    }
+
+    @Override
+    public Valve[] getValves() {
+        return new Valve[0];
+    }
+
+    @Override
+    public void invoke(HttpRequest request, HttpResponse response) {
+        new StandardValveContext().invokeNext(request,response);
+    }
+
+    class StandardValveContext implements ValveContext{
+        
+        int pointer=0;
+        @Override
+        public void invokeNext(HttpRequest request,HttpResponse response){
+            int currentPointer=pointer;
+            pointer++;
+             if (currentPointer<valves.length){
+                valves[currentPointer].invoke(request,response,this);
+            }else if (currentPointer==valves.length&&basicValve!=null){
+                 basicValve.invoke(request,response);
+            }else{
+             }
+
+        }
+    }
+}
+class ContextBasicValve implements BasicValve{
+
+    @Override
+    public void invoke(HttpRequest request, HttpResponse response) {
+    }
+}
+
+class TestValve implements Valve{
+
+    @Override
+    public String getInfo() {
+        return null;
+    }
+
+    @Override
+    public void invoke(HttpRequest request, HttpResponse response, ValveContext valveContext) {
+        valveContext.invokeNext(request,response);
+        System.out.println("now we start testing socket");
+    }
+}
+
+class StandardBasicValve implements BasicValve,Contained{
+    Container container=null;
+    @Override
+    public void invoke(HttpRequest request, HttpResponse response) {
+        if (request.getUri().equals("/META-INF")||request.getUri().equals("/WEB-INF")){
+            System.out.println("无法进入该区域");
+            return;
+        }
+        System.out.println("the valve is over");
+        Context context=(Context) getContainer();
+        response.setContext(context);
+        Wrapper wrapper=(Wrapper) context.map(request);
+        if (wrapper!=null) {
+            wrapper.invoke(request, response);
+        }else{
+            String errorMessage = "HTTP/1.1 404 File Not Found\r\n" +
+                    "Content-Type: text/html\r\n" +
+                    "Content-Length: 23\r\n" +
+                    "\r\n" +
+                    "<h1>Wrapper Not Found</h1>";
+            try {
+                System.out.println("print errormsg");
+                response.getOutputStream().write(errorMessage.getBytes());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
+
+    @Override
+    public void setContainer(Container container) {
+        this.container=container;
+    }
+
+    @Override
+    public Container getContainer() {
+        return container;
     }
 }

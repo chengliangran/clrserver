@@ -15,7 +15,4 @@ import java.util.*;
  * Created by Administrator on 2017-03-27.
  */
 public class Test {
-    public static void main(String[] args) {
-        ResourceEntry
-    }
 }

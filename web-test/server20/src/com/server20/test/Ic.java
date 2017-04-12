@@ -10,6 +10,11 @@ public interface Ic {
 
 //杂项
 
+interface Contained{
+    void setContainer(Container container);
+    Container getContainer();
+}
+
 interface Lifecycle{
     public static final String START_EVENT = "start";
     public static final String BEFORE_START_EVENT = "before_start";
@@ -50,6 +55,9 @@ interface Loader{
 interface Logger{
 
 }
+interface Context{
+    Container map(HttpRequest request);
+}
 interface Mapper{
     Container getContainer();
     void setContainer(Container container);
@@ -62,21 +70,18 @@ interface Mapper{
 
 //管道流系列
 interface PipeLine{
+    BasicValve getBasicValve();
+    void setBasicValve(BasicValve basicValve);
     void addValve(Valve valve);
     Valve removeValve(Valve valve);
-    Valve getBasic();
-    void setBasic(Valve valve);
     Valve[] getValves();
     public void invoke(HttpRequest request,HttpResponse response);
 
 
 }
 
-interface Contained{
-    void setContainer(Container container);
-}
-interface ValveContext{
-    void involveNext(HttpRequest request,HttpResponse response);
+ interface ValveContext{
+    void invokeNext(HttpRequest request,HttpResponse response);
 
 }
 interface Valve {
