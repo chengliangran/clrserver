@@ -45,7 +45,7 @@ interface Container{
     void invoke(HttpRequest request,HttpResponse response);
     void addChild(Container container);
     Container removeChild(Container container);
-    void findChild(String name);
+    Wrapper findChild(String name);
     Container[] findChildren();
 
 }
@@ -61,7 +61,7 @@ interface Context{
 interface Mapper{
     Container getContainer();
     void setContainer(Container container);
-    void mapper(HttpRequest request);
+    Wrapper mapper(HttpRequest request);
     void setProtocal(String protocal);
     String getProtocal();
 

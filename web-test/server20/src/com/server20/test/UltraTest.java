@@ -1,6 +1,7 @@
 package com.server20.test;
 
 import com.server20.core.*;
+import com.sun.jmx.snmp.tasks.ThreadService;
 import com.sun.xml.internal.bind.v2.runtime.reflect.opt.Const;
 import com.sun.xml.internal.bind.v2.runtime.unmarshaller.*;
 
@@ -9,6 +10,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by Administrator on 2017-04-07.
@@ -21,6 +23,10 @@ public class UltraTest {
         context.addValve(new TestValve());
         StandardBasicValve standardBasicValve=new StandardBasicValve();
         standardBasicValve.setContainer(context);
+        context.addServletMapping("/ceshi","ceshi");
+        Wrapper wrapper=new SimpleWrapper();
+        wrapper.setName("ceshi");
+        context.addChild(wrapper);
         context.setBasicValve(standardBasicValve);
         connector.setContainer(context);
         connector.connect();
@@ -239,14 +245,23 @@ class HttpResponse{
 }
 //***容器
 class ContainerBase implements Container, Context, PipeLine{
+    protected String name=null;
     private Container parent=null;
-    private HashMap children=new HashMap();
+    private HashMap<String,Wrapper> children=new HashMap();
     private Loader loader=null;
     private Logger logger=null;
     private PipeLine pipeLine=new StandardPipeline(this);
     private HashMap servletMapping=null;
     private Mapper mapper=null;
     private boolean started=false;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
     @Override
     public BasicValve getBasicValve() {
@@ -288,7 +303,7 @@ class ContainerBase implements Container, Context, PipeLine{
 
     @Override
     public void addChild(Container container) {
-
+        children.put(((Wrapper)container).getName() ,(Wrapper)container);
     }
 
     @Override
@@ -297,8 +312,9 @@ class ContainerBase implements Container, Context, PipeLine{
     }
 
     @Override
-    public void findChild(String name) {
-
+    public Wrapper findChild(String name) {
+        System.out.println(name);
+       return children.get(name);
     }
 
     @Override
@@ -313,19 +329,39 @@ class ContainerBase implements Container, Context, PipeLine{
 }
 
 class SimpleContext extends ContainerBase{
+    HashMap<String,String> servletMapping=new HashMap<>();
+    HashMap<String,Wrapper> children=new HashMap<>();
+    Mapper mapper=new StandardContextMapper(this);
+
+    public Mapper getMapper() {
+        return mapper;
+    }
+
+    public void setMapper(Mapper mapper) {
+        this.mapper = mapper;
+    }
+
+    public void addServletMapping(String pattern, String name){
+        servletMapping.put(pattern,name);
+    }
+    public String getServletMapping(String pattern){
+        System.out.println("name");
+        return servletMapping.get(pattern);
+    }
+
     @Override
     public Container map(HttpRequest request){
-        return null;
+       return null;
     }
 }
-class Wrapper extends ContainerBase{
+class StandardContextMapper implements Mapper{
 
-}
-class SimpleWrapper extends Wrapper{
+    Context context=null;
+    StandardContextMapper(Context context){
+        this.context=context;
+    }
 
-}
 
-class SimpleMapper implements Mapper{
 
     @Override
     public Container getContainer() {
@@ -338,9 +374,14 @@ class SimpleMapper implements Mapper{
     }
 
     @Override
-    public void mapper(HttpRequest request) {
+    public Wrapper mapper(HttpRequest request) {
+        String pattern=request.getUri();
+        SimpleContext simpleContext= (SimpleContext)context;
+        System.out.println("using name");
+        String name=simpleContext.getServletMapping(pattern);
+        return simpleContext.findChild(name);
 
-    }
+     }
 
     @Override
     public void setProtocal(String protocal) {
@@ -350,6 +391,15 @@ class SimpleMapper implements Mapper{
     @Override
     public String getProtocal() {
         return null;
+    }
+}
+class Wrapper extends ContainerBase{
+
+}
+class SimpleWrapper extends Wrapper{
+    @Override
+    public void invoke(HttpRequest request, HttpResponse response) {
+        System.out.println("already invoke the wraper");
     }
 }
 
@@ -447,10 +497,13 @@ class StandardBasicValve implements BasicValve,Contained{
         System.out.println("the valve is over");
         Context context=(Context) getContainer();
         response.setContext(context);
-        Wrapper wrapper=(Wrapper) context.map(request);
-        if (wrapper!=null) {
+        Mapper mapper=((SimpleContext)container).getMapper();
+        Wrapper wrapper=mapper.mapper(request);
+         if (wrapper!=null) {
             wrapper.invoke(request, response);
         }else{
+             System.out.println(request.getUri());
+             System.out.println("finding no wrapper");
             String errorMessage = "HTTP/1.1 404 File Not Found\r\n" +
                     "Content-Type: text/html\r\n" +
                     "Content-Length: 23\r\n" +
@@ -475,4 +528,5 @@ class StandardBasicValve implements BasicValve,Contained{
     public Container getContainer() {
         return container;
     }
+
 }
