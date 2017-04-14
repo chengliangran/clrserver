@@ -1,5 +1,6 @@
 package com.server20.test;
 
+import com.server20.core.HttpConnector;
 import com.sun.org.apache.bcel.internal.util.ClassLoader;
 
 import java.io.*;
@@ -15,4 +16,7 @@ import java.util.*;
  * Created by Administrator on 2017-03-27.
  */
 public class Test {
+    public static void main(String[] args) {
+        System.out.println(System.getProperty("user.dir"));
+    }
 }

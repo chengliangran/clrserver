@@ -58,6 +58,13 @@ interface Logger{
 interface Context{
     Container map(HttpRequest request);
 }
+
+interface Servlet{
+    void init();
+    void service(HttpRequest request,HttpResponse response);
+    void stop();
+    void start();
+}
 interface Mapper{
     Container getContainer();
     void setContainer(Container container);
