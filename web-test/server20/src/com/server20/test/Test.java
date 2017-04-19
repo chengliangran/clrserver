@@ -18,6 +18,7 @@ import java.util.*;
  * Created by Administrator on 2017-03-27.
  */
 public class Test {
+
     public static void main(String[] args) {
         File file=new File("d:/csdn.txt");
         try {
@@ -28,7 +29,5 @@ public class Test {
         System.out.println(System.getProperty("java.home"));
         System.out.println(System.getProperty("user.dir"));
         Digester digester=new Digester();
-        Rule rule=new Rule() {
-        };
-    }
+     }
 }
